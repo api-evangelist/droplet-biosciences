@@ -1,0 +1,104 @@
+generated: '2026-08-12'
+method: probed
+source: https://dropletbiosci.com/wp-json/oauth/v1/metadata
+note: >-
+  Cross-cutting standards conformance judged against documents fetched on 2026-08-12. The
+  provider makes NO conformance claims of its own anywhere on its site; every verdict below is
+  our reading of an observed artifact. Nothing here is a compliance certification — Droplet's
+  only published certification is a CLIA laboratory license, which is a clinical-laboratory
+  regulatory credential, not an information-security or API standard.
+standards:
+- id: oauth2
+  spec: RFC 6749
+  conforms: true
+  evidence: >-
+    Authorization server metadata advertises authorization_code and refresh_token grants with
+    authorization, token, revocation and registration endpoints; observed at
+    /wp-json/oauth/v1/metadata (HTTP 200).
+- id: oauth2-pkce
+  spec: RFC 7636
+  conforms: true
+  evidence: 'code_challenge_methods_supported: ["S256"] in the authorization-server metadata.'
+- id: oauth2-dynamic-client-registration
+  spec: RFC 7591
+  conforms: true
+  evidence: 'registration_endpoint https://dropletbiosci.com/wp-json/oauth/v1/register advertised in metadata.'
+- id: oauth2-token-revocation
+  spec: RFC 7009
+  conforms: true
+  evidence: 'revocation_endpoint https://dropletbiosci.com/wp-json/oauth/v1/revoke advertised in metadata.'
+- id: oauth2-authorization-server-metadata
+  spec: RFC 8414
+  conforms: false
+  evidence: >-
+    A metadata document with the correct shape exists, but it is served at
+    /wp-json/oauth/v1/metadata; /.well-known/oauth-authorization-server returns 404, so RFC 8414
+    discovery fails against this issuer.
+- id: oauth2-protected-resource-metadata
+  spec: RFC 9728
+  conforms: false
+  evidence: '/.well-known/oauth-protected-resource returns 404 and the 401 challenge carries no WWW-Authenticate resource_metadata pointer.'
+- id: jwks
+  spec: RFC 7517
+  conforms: false
+  evidence: 'JWKS endpoint returns 200 with an EMPTY key set: {"keys":[]}.'
+- id: openid-connect
+  conforms: false
+  evidence: '/.well-known/openid-configuration returns 404; the metadata advertises no id_token response type or userinfo endpoint.'
+- id: mcp
+  spec: Model Context Protocol
+  conforms: partial
+  evidence: >-
+    Three JSON-RPC 2.0 MCP endpoints are advertised at /wp-json/mcp and respond, but tools/list is
+    auth-gated (401) and the deployment omits RFC 9728 protected-resource metadata that the MCP
+    authorization spec expects, so a conformant client cannot bootstrap discovery.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'Errors use the WordPress {code,message,data.status} envelope with content-type application/json, not application/problem+json.'
+- id: rfc8288-web-linking
+  conforms: true
+  evidence: 'Collection responses emit Link: <…>; rel="next" and per-resource _links objects.'
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header observed and no deprecation policy published.
+- id: cors
+  conforms: true
+  evidence: 'Access-Control-Allow-Headers and Access-Control-Expose-Headers present on wp-json responses.'
+- id: hsts
+  spec: RFC 6797
+  conforms: false
+  evidence: 'No Strict-Transport-Security header on dropletbiosci.com (see security/droplet-biosciences-domain-security.yml).'
+- id: dnssec
+  conforms: false
+  evidence: 'dropletbiosci.com is not DNSSEC-signed (see security/droplet-biosciences-domain-security.yml).'
+- id: hl7-fhir
+  conforms: false
+  evidence: No FHIR resource shapes, no /fhir base, no CapabilityStatement — Droplet exposes no clinical data interface.
+- id: hipaa
+  conforms: unknown
+  evidence: >-
+    Droplet operates a CLIA-licensed clinical laboratory and publishes a Privacy Practices notice,
+    which implies HIPAA obligations, but the company publishes no HIPAA attestation, BAA posture
+    or security compliance page. Not asserted either way.
+regulatory:
+- id: clia
+  name: Clinical Laboratory Improvement Amendments laboratory license
+  published: true
+  url: https://dropletbiosci.com/certificates-licenses/
+  document: https://dropletbiosci.com/wp-content/uploads/2025/06/Droplet-Biosciences-CLIA-License.pdf
+  document_status: 200
+  document_content_type: application/pdf
+  note: >-
+    A real, published regulatory credential for the company's laboratory. It certifies the lab,
+    not the API surface — do not read it as an infosec compliance program.
+x-evidence:
+  fetched: '2026-08-12'
+  probes:
+  - {url: 'https://dropletbiosci.com/wp-json/oauth/v1/metadata', http_status: 200}
+  - {url: 'https://dropletbiosci.com/wp-json/oauth/v1/jwks', http_status: 200}
+  - {url: 'https://dropletbiosci.com/.well-known/oauth-authorization-server', http_status: 404}
+  - {url: 'https://dropletbiosci.com/.well-known/openid-configuration', http_status: 404}
+  - {url: 'https://dropletbiosci.com/wp-content/uploads/2025/06/Droplet-Biosciences-CLIA-License.pdf', http_status: 200}

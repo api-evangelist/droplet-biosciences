@@ -1,0 +1,86 @@
+generated: '2026-08-12'
+method: probed
+source: https://dropletbiosci.com/wp-json/oauth/v1/metadata
+note: >-
+  Derived from live, anonymously readable discovery documents on dropletbiosci.com — there is no
+  OpenAPI to derive from and the provider publishes no authentication documentation page. Two
+  distinct auth models coexist on the same host: the WordPress core REST API is READ-ANONYMOUS
+  for published content and uses cookie+nonce or application passwords for writes, while the MCP
+  and Abilities surfaces sit behind an OAuth 2.0 authorization server. None of this is a Droplet
+  developer program; it is the auth posture of the CMS the company runs its marketing site on.
+summary:
+  types: [none, oauth2, http]
+  api_key_in: []
+  oauth2_flows: [authorizationCode]
+  anonymous_read: true
+schemes:
+- name: anonymous
+  type: none
+  applies_to:
+  - https://dropletbiosci.com/wp-json/wp/v2/*
+  description: >-
+    Published content collections (posts, pages, media, and the custom types publications,
+    press-releases, team) return 200 with no credential. Verified 2026-08-12.
+  sources: [https://dropletbiosci.com/wp-json/wp/v2/publications]
+- name: oauth2
+  type: oauth2
+  applies_to:
+  - https://dropletbiosci.com/wp-json/mcp/*
+  - https://dropletbiosci.com/wp-json/wp-abilities/v1/*
+  flows:
+  - flow: authorizationCode
+    issuer: https://dropletbiosci.com/events-manager
+    authorizationUrl: https://dropletbiosci.com/events-manager/oauth/authorize
+    tokenUrl: https://dropletbiosci.com/wp-json/oauth/v1/token
+    revocationUrl: https://dropletbiosci.com/wp-json/oauth/v1/revoke
+    registrationUrl: https://dropletbiosci.com/wp-json/oauth/v1/register
+    scopes:
+      events-manager:mcp: Access the Events Manager MCP server
+  pkce:
+    required: true
+    code_challenge_methods_supported: [S256]
+  client_authentication:
+    token_endpoint_auth_methods_supported: [none]
+    note: Public clients only — no confidential-client authentication method is advertised.
+  dynamic_client_registration:
+    supported: true
+    spec: RFC 7591
+    url: https://dropletbiosci.com/wp-json/oauth/v1/register
+    note: Open registration endpoint; not exercised by this probe (registering a client would write to the provider's system).
+  jwks:
+    url: https://dropletbiosci.com/wp-json/oauth/v1/jwks
+    status: 200
+    keys: 0
+    note: 'The JWKS document is served but empty ({"keys":[]}), so no token signature can be verified from published material.'
+  discovery:
+    metadata_url: https://dropletbiosci.com/wp-json/oauth/v1/metadata
+    rfc8414_well_known: false
+    note: >-
+      Metadata is NOT served at /.well-known/oauth-authorization-server (404), so a standards-
+      compliant RFC 8414 client will fail discovery against this issuer.
+  sources: [https://dropletbiosci.com/wp-json/oauth/v1/metadata]
+- name: application-passwords
+  type: http
+  scheme: basic
+  applies_to:
+  - https://dropletbiosci.com/wp-json/wp/v2/*
+  description: >-
+    WordPress application passwords, advertised in the /wp-json/ discovery document's
+    authentication block. Authorization is granted interactively at
+    https://dropletbiosci.com/wp-admin/authorize-application.php. Write access only; there is no
+    self-service developer signup behind it.
+  sources: [https://dropletbiosci.com/wp-json/]
+gaps:
+- No authentication documentation page exists on the provider's site.
+- No RFC 8414 or RFC 9728 well-known discovery.
+- Empty JWKS.
+- The 401 challenge carries no WWW-Authenticate header pointing at the authorization server.
+x-evidence:
+  fetched: '2026-08-12'
+  probes:
+  - {url: 'https://dropletbiosci.com/wp-json/oauth/v1/metadata', http_status: 200}
+  - {url: 'https://dropletbiosci.com/wp-json/oauth/v1/jwks', http_status: 200}
+  - {url: 'https://dropletbiosci.com/.well-known/oauth-authorization-server', http_status: 404}
+  - {url: 'https://dropletbiosci.com/.well-known/oauth-protected-resource', http_status: 404}
+  - {url: 'https://dropletbiosci.com/wp-json/wp/v2/publications?per_page=1', http_status: 200}
+  - {url: 'https://dropletbiosci.com/wp-json/wp-abilities/v1/abilities', http_status: 401}

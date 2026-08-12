@@ -1,0 +1,80 @@
+generated: '2026-08-12'
+method: probed
+source: live responses from https://dropletbiosci.com/wp-json/
+note: >-
+  Cross-cutting semantics observed on live responses from the WordPress REST API running on
+  dropletbiosci.com. The provider documents none of this; every value below was read off an
+  actual response or the discovery document. These are WordPress core conventions, inherited
+  rather than designed by Droplet Biosciences.
+authentication:
+  style: anonymous read; OAuth 2.0 bearer for MCP/Abilities; cookie+nonce or application password for writes
+  see: authentication/droplet-biosciences-authentication.yml
+idempotency:
+  supported: false
+  note: >-
+    No idempotency key header, parameter or documented semantics anywhere in the 472-route
+    discovery document or in any observed response. NO Idempotency pointer is emitted in apis.yml.
+pagination:
+  style: page-number
+  request_params:
+  - {name: page, in: query, type: integer, default: 1, minimum: 1}
+  - {name: per_page, in: query, type: integer, default: 10, minimum: 1, maximum: 100}
+  - {name: offset, in: query, type: integer, note: alternative to page on wp/v2 collections}
+  response_headers:
+  - {name: X-WP-Total, meaning: total items in the collection, observed_value: '17'}
+  - {name: X-WP-TotalPages, meaning: total pages at the current per_page, observed_value: '9'}
+  - {name: Link, meaning: 'RFC 8288 rel="next" / rel="prev" pagination links'}
+  cors_exposed: [X-WP-Total, X-WP-TotalPages, Link]
+  observed_on: https://dropletbiosci.com/wp-json/wp/v2/publications?per_page=2
+field_selection:
+  supported: true
+  params:
+  - {name: _fields, note: comma-separated sparse fieldset}
+  - {name: _embed, note: inline embedded related resources via _links}
+  - {name: context, note: 'view | embed | edit — determines which fields are present'}
+  hypermedia: >-
+    Every resource carries a _links object (HAL-ish), and collections expose curies; this is the
+    only relationship documentation available since there is no OpenAPI.
+versioning:
+  scheme: namespace-in-path
+  current: wp/v2
+  namespaces_live: 19
+  note: >-
+    Namespaces are plugin-scoped (wp/v2, events-manager/v1, oauth/v1, mcp, wp-abilities/v1, …).
+    There is no published versioning or deprecation policy, and no Sunset/Deprecation header
+    support was observed.
+error_envelope:
+  format: wordpress-rest
+  rfc9457: false
+  content_type: application/json
+  shape:
+    code: machine-readable string slug
+    message: human-readable sentence
+    data.status: integer HTTP status repeated in the body
+  example_observed: '{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}}'
+  see: errors/droplet-biosciences-problem-types.yml
+rate_limiting:
+  documented: false
+  headers_observed: []
+  see: rate-limits/droplet-biosciences-rate-limits.yml
+request_tracing:
+  provider_request_id: false
+  note: >-
+    No provider-issued request id. Cloudflare's cf-ray and Kinsta's ki-edge/x-kinsta-cache are
+    present on every response but are edge/infrastructure identifiers, not an API trace contract.
+caching:
+  headers_observed: [cf-cache-status, x-kinsta-cache, vary]
+  note: 'API responses observed as x-kinsta-cache: BYPASS / cf-cache-status: DYNAMIC — not cached at the edge.'
+cors:
+  allow_headers: [Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type]
+  expose_headers: [X-WP-Total, X-WP-TotalPages, Link]
+  vary: [Accept-Encoding, Origin]
+robots:
+  api_indexable: false
+  note: 'wp-json responses carry x-robots-tag: noindex.'
+x-evidence:
+  fetched: '2026-08-12'
+  probes:
+  - {url: 'https://dropletbiosci.com/wp-json/wp/v2/publications?per_page=2', http_status: 200}
+  - {url: 'https://dropletbiosci.com/wp-json/', http_status: 200}
+  - {url: 'https://dropletbiosci.com/wp-json/mcp/events-manager', http_status: 401}

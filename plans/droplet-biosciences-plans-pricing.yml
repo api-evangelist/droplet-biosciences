@@ -1,0 +1,20 @@
+generated: '2026-08-12'
+method: searched
+source: https://dropletbiosci.com/
+plan_count: 0
+note: >-
+  Droplet Biosciences publishes no pricing page and no plans of any kind. The full site was
+  enumerated from https://dropletbiosci.com/sitemap_index.xml (22 pages) on 2026-08-12 and there
+  is no /pricing, no /plans, no signup and no self-service tier. This is expected: Droplet is a
+  clinical diagnostics laboratory whose LymphDetect test is ordered through clinicians and
+  institutional collaborators, and the machine-readable surfaces found on its host (WordPress
+  REST, three MCP endpoints) are CMS byproducts with no commercial packaging at all. Recorded as
+  an honest zero rather than omitted.
+plans: []
+commercial_model: clinician-ordered clinical laboratory test; contact and booking only
+contact: https://dropletbiosci.com/contact/
+x-evidence:
+  fetched: '2026-08-12'
+  probes:
+  - {url: 'https://dropletbiosci.com/sitemap_index.xml', http_status: 200}
+  - {url: 'https://dropletbiosci.com/clinical-testing/', http_status: 200}

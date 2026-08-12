@@ -1,10 +1,25 @@
 aid: droplet-biosciences
 name: Droplet Biosciences
-description: 'Droplet Biosciences is a company surfaced via the API Evangelist harvest backlog (source:
-  secondary-market) and added to the network as a stub for full-pipeline profiling.'
+description: 'Droplet Biosciences is a Cambridge, Massachusetts clinical-stage molecular
+  diagnostics company, founded in 2021 by physician scientists and backed by The Engine
+  Ventures, that has pioneered a lymph liquid biopsy platform for detecting molecular
+  residual disease after cancer surgery. Rather than sampling blood, Droplet stabilizes
+  and extracts lymphatic fluid from routine post-surgical drain material through a
+  proprietary isolation process, yielding an analyte source in which circulating tumor
+  DNA is present at substantially higher levels than in matched plasma. Its lead test,
+  LymphDetect, is an ultra-sensitive tumor-informed ctDNA assay initially targeting
+  HPV-independent head and neck squamous cell carcinoma, run out of the company''s
+  own CLIA-licensed laboratory. Droplet is a laboratory and assay company, not a software
+  vendor: it publishes no developer program, no documentation, no SDK and no OpenAPI.
+  The machine-readable endpoints catalogued here are not a product API — they are the
+  WordPress REST API, an OAuth 2.0 authorization server and three Model Context Protocol
+  endpoints emitted by plugins on the company''s marketing site, all found live and
+  callable on dropletbiosci.com during contract discovery on 2026-08-12.'
 url: https://raw.githubusercontent.com/api-evangelist/droplet-biosciences/refs/heads/main/apis.yml
+image: https://dropletbiosci.com/wp-content/uploads/2022/10/cropped-Droplet-Favicon-270x270.png
 x-type: company
 x-source: harvest:secondary-market
+x-source-url: https://forgeglobal.com/droplet-biosciences_stock/
 x-tier: stub
 x-tier-reason: harvest
 specificationVersion: '0.20'
@@ -12,7 +27,47 @@ created: '2026-08-12'
 modified: '2026-08-12'
 tags:
 - Company
-apis: []
+- Health
+- Healthcare
+- Diagnostics
+- Oncology
+- Genomics
+- Liquid Biopsy
+- Life Sciences
+- Biotechnology
+- Clinical Laboratory
+apis:
+- name: Droplet Biosciences WordPress REST API
+  description: 'The WordPress core REST API served from the company''s marketing site.
+    It is live, anonymous for published content, and self-describing: the discovery
+    document at /wp-json/ lists 472 routes across 19 namespaces, and the wp/v2 namespace
+    (138 routes) serves Droplet''s own content including the custom post types publications,
+    press-releases and team. This is a CMS default surface, NOT a Droplet product API
+    — there is no documentation, no portal, no plan, no support channel and no versioning
+    or deprecation policy attached to it. It is catalogued because it genuinely exists
+    and an agent can call it. The same host also exposes an OAuth 2.0 authorization
+    server and three Model Context Protocol endpoints under /wp-json/, which are gated
+    and covered by the artifacts below.'
+  humanURL: https://dropletbiosci.com/
+  baseURL: https://dropletbiosci.com/wp-json/
+  tags:
+  - Content
+  - CMS
+  - WordPress
+  - REST
+  properties:
+  - type: MCPServer
+    url: mcp/droplet-biosciences-mcp.yml
+  - type: Authentication
+    url: authentication/droplet-biosciences-authentication.yml
+  - type: OAuthScopes
+    url: scopes/droplet-biosciences-scopes.yml
+  - type: Conventions
+    url: conventions/droplet-biosciences-conventions.yml
+  - type: ErrorCatalog
+    url: errors/droplet-biosciences-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/droplet-biosciences-rate-limits.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +75,59 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://forgeglobal.com/droplet-biosciences_stock/
+  url: https://dropletbiosci.com/
+- type: About
+  url: https://dropletbiosci.com/about/
+- type: Contact
+  url: https://dropletbiosci.com/contact/
+- type: Team
+  url: https://dropletbiosci.com/about/
+- type: Careers
+  url: https://dropletbiosci.com/careers/
+- type: Press
+  url: https://dropletbiosci.com/press-releases/
+- type: BlogRSS
+  url: https://dropletbiosci.com/press-releases/feed/
+- type: TermsOfService
+  url: https://dropletbiosci.com/terms-of-service/
+- type: PrivacyPolicy
+  url: https://dropletbiosci.com/privacy-policy/
+- type: Compliance
+  url: https://dropletbiosci.com/certificates-licenses/
+- type: MCPServer
+  url: mcp/droplet-biosciences-mcp.yml
+- type: Authentication
+  url: authentication/droplet-biosciences-authentication.yml
+- type: OAuthScopes
+  url: scopes/droplet-biosciences-scopes.yml
+- type: Conventions
+  url: conventions/droplet-biosciences-conventions.yml
+- type: ErrorCatalog
+  url: errors/droplet-biosciences-problem-types.yml
+- type: Conformance
+  url: conformance/droplet-biosciences-conformance.yml
+- type: RateLimits
+  url: rate-limits/droplet-biosciences-rate-limits.yml
+- type: Plans
+  url: plans/droplet-biosciences-plans-pricing.yml
+- type: DomainSecurity
+  url: security/droplet-biosciences-domain-security.yml
+- type: LLMsTxt
+  url: llms/droplet-biosciences-llms.txt
+x-enrichment:
+  date: '2026-08-12'
+  status: enriched
+  artifacts_added: 11
+  pass: local-v1
+x-enrichment-note: >-
+  Supersedes the earlier 2026-08-12 pass that recorded status minimal / x-coverage
+  none:no-developer-program. That pass probed only the site root and concluded there was
+  no machine-readable interface. Contract discovery against /wp-json/ found a live
+  anonymous REST API, an OAuth 2.0 authorization server with PKCE and open dynamic client
+  registration, and three MCP endpoints. The x-coverage block has been removed because
+  the profile is no longer thin — but note that Droplet still has NO developer program,
+  and the surfaces found are CMS/plugin byproducts rather than a product API. Read
+  mcp/droplet-biosciences-mcp.yml and well-known/droplet-biosciences-well-known.yml before
+  treating Droplet Biosciences as an API provider. No WellKnown, SecurityTxt, AgentCard,
+  Idempotency, SDKs, StatusPage, Deprecation, Security or TrustCenter pointer is emitted:
+  every one of those probes returned a verified miss.

@@ -1,0 +1,53 @@
+generated: '2026-08-12'
+method: probed
+source: live responses from https://dropletbiosci.com/wp-json/
+format: wordpress-rest
+rfc9457: false
+note: >-
+  There is no OpenAPI to derive 4xx/5xx responses from and the provider publishes no error
+  reference, so this catalog contains ONLY error shapes actually observed on the wire during the
+  2026-08-12 probe. It is deliberately short: nothing has been added from knowledge of what
+  WordPress can emit in general. The envelope is the WordPress REST error object, not RFC 9457
+  application/problem+json.
+envelope:
+  content_type: application/json
+  fields:
+    code: machine-readable string slug
+    message: human-readable sentence
+    data.status: integer HTTP status repeated in the body
+problems:
+- status: 401
+  code: rest_forbidden
+  title: Sorry, you are not allowed to do that.
+  observed_on:
+  - https://dropletbiosci.com/wp-json/mcp/mcp-adapter-default-server
+  - https://dropletbiosci.com/wp-json/mcp/events-manager
+  - https://dropletbiosci.com/wp-json/mcp/amelia-mcp-server
+  - https://dropletbiosci.com/wp-json/wp-abilities/v1/abilities
+  body: '{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}}'
+  remediation: >-
+    Obtain an OAuth 2.0 access token from https://dropletbiosci.com/wp-json/oauth/v1/token
+    (authorization_code + PKCE S256, public client). The 401 itself carries no WWW-Authenticate
+    header, so a client must already know the authorization server location.
+- status: 404
+  code: null
+  title: Page not found
+  observed_on:
+  - https://dropletbiosci.com/.well-known/security.txt
+  - https://dropletbiosci.com/openapi.json
+  - https://dropletbiosci.com/llms.txt
+  content_type: text/html
+  note: >-
+    Unknown paths on the site root return the WordPress theme's HTML 404 page, NOT a JSON error.
+    Only paths under /wp-json/ produce the JSON envelope above. A client probing the site root
+    must check content-type, not just status.
+gaps:
+- No published error reference.
+- No RFC 9457 problem+json.
+- No error type URIs.
+x-evidence:
+  fetched: '2026-08-12'
+  probes:
+  - {url: 'https://dropletbiosci.com/wp-json/mcp/events-manager', http_status: 401}
+  - {url: 'https://dropletbiosci.com/wp-json/wp-abilities/v1/abilities', http_status: 401}
+  - {url: 'https://dropletbiosci.com/openapi.json', http_status: 404}

@@ -1,0 +1,144 @@
+generated: '2026-08-12'
+method: probed
+source: https://dropletbiosci.com/
+host: https://dropletbiosci.com
+note: >-
+  Every RFC 8615 /.well-known/ path probed on the company's only live host returns 404,
+  so NO WellKnown or SecurityTxt pointer is emitted in apis.yml — this section records a
+  verified ABSENCE. That is NOT the whole story, however. dropletbiosci.com is a WordPress
+  site (Kinsta / Cloudflare) whose core REST API is live and anonymously readable at
+  /wp-json/, and it additionally exposes an OAuth 2.0 authorization server and three
+  Model Context Protocol endpoints at non-standard, plugin-provided paths under /wp-json/.
+  Those are recorded under discovered_surfaces below and captured as first-class artifacts
+  in mcp/, authentication/, scopes/ and conventions/. A prior enrichment round probed only
+  the site root and concluded "no machine-readable interface"; that conclusion was wrong and
+  is superseded by this file.
+documents:
+- path: /.well-known/security.txt
+  status: 404
+- path: /.well-known/openid-configuration
+  status: 404
+- path: /.well-known/oauth-authorization-server
+  status: 404
+  note: >-
+    The provider DOES run an OAuth 2.0 authorization server, but publishes its metadata at
+    /wp-json/oauth/v1/metadata instead of this RFC 8414 well-known location. An RFC 8414
+    client performing standard discovery against this host will not find it.
+- path: /.well-known/oauth-protected-resource
+  status: 404
+  note: >-
+    RFC 9728 protected-resource metadata is absent, so the gated MCP endpoints return a bare
+    401 with no WWW-Authenticate resource_metadata pointer for a client to follow.
+- path: /.well-known/api-catalog
+  status: 404
+- path: /.well-known/ai-plugin.json
+  status: 404
+- path: /.well-known/agent-card.json
+  status: 404
+- path: /.well-known/agent.json
+  status: 404
+contract_discovery:
+- path: /openapi.json
+  status: 404
+- path: /openapi.yaml
+  status: 403
+- path: /swagger.json
+  status: 404
+- path: /api-docs
+  status: 404
+- path: /docs
+  status: 404
+- path: /graphql
+  status: 404
+- path: /llms.txt
+  status: 404
+- path: /robots.txt
+  status: 200
+  note: 'Yoast block; User-agent * Disallow: (empty) — nothing disallowed. Sitemap index at /sitemap_index.xml.'
+- path: /sitemap_index.xml
+  status: 200
+  note: 6 child sitemaps; 22 pages, 17 publications, 8 press releases, 29 team profiles. No developer or docs page exists.
+discovered_surfaces:
+- kind: rest-discovery
+  path: /wp-json/
+  status: 200
+  content_type: application/json
+  file: droplet-biosciences-wp-json-route-index.json
+  note: >-
+    WordPress core REST API discovery document, served anonymously. 472 routes across 19
+    namespaces. This is the CMS default surface, not a published developer program — there
+    is no documentation, no portal, no plan and no support channel for it. It is real and
+    callable nonetheless: wp/v2 (138 routes) serves the company's own content, including the
+    custom post types publications, press-releases and team.
+- kind: oauth-authorization-server-metadata
+  path: /wp-json/oauth/v1/metadata
+  status: 200
+  content_type: application/json
+  file: droplet-biosciences-oauth-authorization-server.json
+  note: >-
+    RFC 8414-shaped metadata served OFF the well-known path. Issuer
+    https://dropletbiosci.com/events-manager, authorization_code + refresh_token, PKCE S256
+    required, RFC 7591 dynamic client registration open at /wp-json/oauth/v1/register,
+    token_endpoint_auth_methods_supported ["none"] (public clients only), single scope
+    events-manager:mcp.
+- kind: jwks
+  path: /wp-json/oauth/v1/jwks
+  status: 200
+  content_type: application/json
+  note: 'Served, but the key set is EMPTY: {"keys":[]}. No signing keys are published.'
+- kind: mcp-namespace-index
+  path: /wp-json/mcp
+  status: 200
+  content_type: application/json
+  file: droplet-biosciences-mcp-namespace-index.json
+  note: >-
+    Three MCP servers advertised — mcp-adapter-default-server, events-manager,
+    amelia-mcp-server — each accepting POST/GET/DELETE. See mcp/droplet-biosciences-mcp.yml.
+- kind: mcp-endpoint
+  path: /wp-json/mcp/mcp-adapter-default-server
+  status: 401
+  note: 'JSON-RPC tools/list returns {"code":"rest_forbidden","status":401} — auth-gated.'
+- kind: mcp-endpoint
+  path: /wp-json/mcp/events-manager
+  status: 401
+  note: 'JSON-RPC tools/list returns {"code":"rest_forbidden","status":401} — auth-gated.'
+- kind: mcp-endpoint
+  path: /wp-json/mcp/amelia-mcp-server
+  status: 401
+  note: 'JSON-RPC tools/list returns {"code":"rest_forbidden","status":401} — auth-gated.'
+- kind: abilities-index
+  path: /wp-json/wp-abilities/v1/abilities
+  status: 401
+  note: WordPress Abilities API present but gated; it is the registry the MCP adapter projects as tools.
+- kind: feed
+  path: /feed/
+  status: 200
+  content_type: application/rss+xml
+- kind: feed
+  path: /press-releases/feed/
+  status: 200
+  content_type: application/rss+xml
+subdomains_checked:
+- {host: api.dropletbiosci.com, dns: NXDOMAIN}
+- {host: developer.dropletbiosci.com, dns: NXDOMAIN}
+- {host: developers.dropletbiosci.com, dns: NXDOMAIN}
+- {host: docs.dropletbiosci.com, dns: NXDOMAIN}
+- {host: portal.dropletbiosci.com, dns: NXDOMAIN}
+- {host: app.dropletbiosci.com, dns: NXDOMAIN}
+- {host: trust.dropletbiosci.com, dns: NXDOMAIN}
+- {host: status.dropletbiosci.com, dns: NXDOMAIN}
+- {host: secure.dropletbiosci.com, dns: NXDOMAIN}
+- {host: results.dropletbiosci.com, dns: NXDOMAIN}
+- {host: order.dropletbiosci.com, dns: NXDOMAIN}
+- {host: orders.dropletbiosci.com, dns: NXDOMAIN}
+- {host: provider.dropletbiosci.com, dns: NXDOMAIN}
+- {host: physician.dropletbiosci.com, dns: NXDOMAIN}
+- {host: patient.dropletbiosci.com, dns: NXDOMAIN}
+- {host: my.dropletbiosci.com, dns: NXDOMAIN}
+- {host: login.dropletbiosci.com, dns: NXDOMAIN}
+- {host: lab.dropletbiosci.com, dns: NXDOMAIN}
+- {host: data.dropletbiosci.com, dns: NXDOMAIN}
+related_domains:
+- {domain: dropletbiosciences.com, resolves: true, note: resolves to the same edge address as dropletbio.com; not probed as a distinct API host}
+- {domain: dropletbio.com, resolves: true, note: alternate company domain}
+- {domain: lymphdetect.com, dns: NXDOMAIN}

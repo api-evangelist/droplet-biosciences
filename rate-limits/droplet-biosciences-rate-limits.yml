@@ -1,0 +1,24 @@
+generated: '2026-08-12'
+method: probed
+source: live responses from https://dropletbiosci.com/wp-json/
+limit_count: 0
+note: >-
+  Droplet Biosciences documents no rate limits, because it publishes no developer program. The
+  live WordPress REST surface at /wp-json/ returned no rate-limit signalling of any kind on the
+  responses observed on 2026-08-12: no RateLimit-*, no X-RateLimit-*, no Retry-After. The host
+  sits behind Cloudflare and Kinsta, so unpublished edge throttling almost certainly exists, but
+  an agent has no runtime signal to read and no documented number to plan against. Recorded as an
+  honest zero.
+limits: []
+headers_observed: []
+headers_expected_absent: [RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After]
+exhaustion_status: unknown
+edge:
+  cdn: Cloudflare
+  host: Kinsta
+  note: Inferred from server, cf-ray, ki-edge and x-kinsta-cache response headers; no published policy.
+x-evidence:
+  fetched: '2026-08-12'
+  probes:
+  - {url: 'https://dropletbiosci.com/wp-json/wp/v2/publications?per_page=2', http_status: 200}
+  - {url: 'https://dropletbiosci.com/wp-json/', http_status: 200}

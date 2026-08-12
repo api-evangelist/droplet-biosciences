@@ -1,0 +1,33 @@
+generated: '2026-08-12'
+method: probed
+source: https://dropletbiosci.com/wp-json/oauth/v1/metadata
+docs: null
+note: >-
+  Read verbatim from the live authorization-server metadata document, not from documentation —
+  the provider publishes no scope reference page. The scope surface is a single scope emitted by
+  the Events Manager WordPress plugin, not a Droplet product permission model. derive-oauth-scopes.py
+  was not the source here because there is no OpenAPI in this repo to derive from.
+schemes:
+- name: oauth2
+  source: https://dropletbiosci.com/wp-json/oauth/v1/metadata
+  issuer: https://dropletbiosci.com/events-manager
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://dropletbiosci.com/events-manager/oauth/authorize
+    tokenUrl: https://dropletbiosci.com/wp-json/oauth/v1/token
+scopes:
+- scope: events-manager:mcp
+  description: >-
+    The only scope advertised in scopes_supported. Grants access to the Events Manager MCP server
+    at /wp-json/mcp/events-manager. No description is published by the provider; this text is a
+    statement of where the scope is used, not a quotation.
+  flows: [authorizationCode]
+  sources: [https://dropletbiosci.com/wp-json/oauth/v1/metadata]
+scope_count: 1
+gaps:
+- The other two MCP servers (mcp-adapter-default-server, amelia-mcp-server) have no advertised scope.
+- No scope-to-permission mapping, and no granularity beyond a single all-or-nothing scope.
+x-evidence:
+  fetched: '2026-08-12'
+  url: https://dropletbiosci.com/wp-json/oauth/v1/metadata
+  http_status: 200
