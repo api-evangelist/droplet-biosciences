@@ -4,29 +4,33 @@ source: https://dropletbiosci.com/wp-json/mcp
 status: published
 first_party: false
 origin: wordpress-plugin
-note: >-
-  Droplet Biosciences serves three live Model Context Protocol endpoints from its own host,
-  dropletbiosci.com. They are REAL — the namespace index is anonymous and each endpoint answers
-  JSON-RPC — but they are NOT a Droplet product API. They are emitted by the WordPress MCP
-  Adapter and by two booking/events plugins running on the company's marketing site, so their
-  tool surface concerns events, bookings and site content, not the LymphDetect diagnostic
-  service. Recorded here because the endpoints genuinely exist and an agent can reach them;
-  read this file before treating Droplet as an MCP-enabled diagnostics vendor. No tool list is
-  recorded: every tools/list call returns 401 and NO tool names have been published anywhere,
-  so nothing is derived or guessed.
+note: 'Droplet Biosciences serves three live Model Context Protocol endpoints from its own host, dropletbiosci.com.
+  They are REAL — the namespace index is anonymous and each endpoint answers JSON-RPC — but they are NOT
+  a Droplet product API. They are emitted by the WordPress MCP Adapter and by two booking/events plugins
+  running on the company''s marketing site, so their tool surface concerns events, bookings and site content,
+  not the LymphDetect diagnostic service. Recorded here because the endpoints genuinely exist and an agent
+  can reach them; read this file before treating Droplet as an MCP-enabled diagnostics vendor. No tool
+  list is recorded: every tools/list call returns 401 and NO tool names have been published anywhere,
+  so nothing is derived or guessed.'
 transport: streamable-http
 protocol: JSON-RPC 2.0 over HTTP
 servers:
 - name: mcp-adapter-default-server
   url: https://dropletbiosci.com/wp-json/mcp/mcp-adapter-default-server
-  methods: [POST, GET, DELETE]
+  methods:
+  - POST
+  - GET
+  - DELETE
   auth: required
   observed_status: 401
   observed_body: '{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}}'
   source_component: WordPress MCP Adapter (default server)
 - name: events-manager
   url: https://dropletbiosci.com/wp-json/mcp/events-manager
-  methods: [POST, GET, DELETE]
+  methods:
+  - POST
+  - GET
+  - DELETE
   auth: required
   observed_status: 401
   observed_body: '{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}}'
@@ -34,30 +38,30 @@ servers:
   oauth_scope: events-manager:mcp
 - name: amelia-mcp-server
   url: https://dropletbiosci.com/wp-json/mcp/amelia-mcp-server
-  methods: [POST, GET, DELETE]
+  methods:
+  - POST
+  - GET
+  - DELETE
   auth: required
   observed_status: 401
   observed_body: '{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}}'
   source_component: Amelia booking plugin
 tools: []
-tools_note: >-
-  Auth-gated. POST {"jsonrpc":"2.0","id":1,"method":"tools/list"} with
-  Accept: application/json, text/event-stream returned HTTP 401 rest_forbidden on all three
-  endpoints on 2026-08-12. The provider publishes no llms.txt and no tool documentation, so
-  there is no published fallback list to record. Input schemas require an authenticated
-  introspection against the WordPress Abilities API registry
-  (/wp-json/wp-abilities/v1/abilities, also 401).
+tools_note: 'Auth-gated. POST {"jsonrpc":"2.0","id":1,"method":"tools/list"} with Accept: application/json,
+  text/event-stream returned HTTP 401 rest_forbidden on all three endpoints on 2026-08-12. The provider
+  publishes no llms.txt and no tool documentation, so there is no published fallback list to record. Input
+  schemas require an authenticated introspection against the WordPress Abilities API registry (/wp-json/wp-abilities/v1/abilities,
+  also 401).'
 authorization:
   model: oauth2
   metadata: https://dropletbiosci.com/wp-json/oauth/v1/metadata
   metadata_at_well_known: false
   protected_resource_metadata: absent
-  challenge_quality: >-
-    The 401 is a bare WordPress REST error body. It carries no WWW-Authenticate header with an
-    RFC 9728 resource_metadata pointer, so an MCP client cannot discover the authorization
-    server from the challenge alone; discovery only works if the client already knows to look
-    at /wp-json/oauth/v1/metadata.
-  scopes: [events-manager:mcp]
+  challenge_quality: The 401 is a bare WordPress REST error body. It carries no WWW-Authenticate header
+    with an RFC 9728 resource_metadata pointer, so an MCP client cannot discover the authorization server
+    from the challenge alone; discovery only works if the client already knows to look at /wp-json/oauth/v1/metadata.
+  scopes:
+  - events-manager:mcp
   dynamic_client_registration: https://dropletbiosci.com/wp-json/oauth/v1/register
 x-evidence:
   fetched: '2026-08-12'
@@ -67,6 +71,13 @@ x-evidence:
     content_type: application/json
     file: ../well-known/droplet-biosciences-mcp-namespace-index.json
   tools_list_probe:
-    method: 'POST tools/list (JSON-RPC 2.0)'
+    method: POST tools/list (JSON-RPC 2.0)
     http_status: 401
     endpoints_probed: 3
+deployment:
+  mode: remote
+  endpoint: https://dropletbiosci.com/wp-json/mcp/mcp-adapter-default-server
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census
