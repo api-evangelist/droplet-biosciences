@@ -16,6 +16,17 @@ description: 'Droplet Biosciences is a Cambridge, Massachusetts clinical-stage m
   endpoints emitted by plugins on the company''s marketing site, all found live and
   callable on dropletbiosci.com during contract discovery on 2026-08-12.'
 url: https://raw.githubusercontent.com/api-evangelist/droplet-biosciences/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://dropletbiosci.com/wp-content/uploads/2022/10/cropped-Droplet-Favicon-270x270.png
 x-type: company
 x-source: harvest:secondary-market
