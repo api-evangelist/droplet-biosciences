@@ -94,6 +94,9 @@ apis:
     url: errors/droplet-biosciences-problem-types.yml
   - type: RateLimits
     url: rate-limits/droplet-biosciences-rate-limits.yml
+  x-surface: platform-generated
+  x-platform: wordpress
+  x-platform-surface: rest
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
