@@ -64,5 +64,113 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Droplet Biosciences is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/droplet-biosciences_stock/
+Droplet Biosciences is a Cambridge, Massachusetts clinical-stage molecular diagnostics company, founded in 2021 by physician scientists and backed by The Engine Ventures, that has pioneered a lymph liquid biopsy platform for detecting molecular residual disease after cancer surgery. Rather than sampling blood, Droplet stabilizes and extracts lymphatic fluid from routine post-surgical drain material through a proprietary isolation process, yielding an analyte source in which circulating tumor DNA is present at substantially higher levels than in matched plasma. Its lead test, LymphDetect, is an ultra-sensitive tumor-informed ctDNA assay initially targeting HPV-independent head and neck squamous cell carcinoma, run out of the company's own CLIA-licensed laboratory. Droplet is a laboratory and assay company, not a software vendor: it publishes no developer program, no documentation, no SDK and no OpenAPI. The machine-readable endpoints catalogued here are not a product API — they are the WordPress REST API, an OAuth 2.0 authorization server and three Model Context Protocol endpoints emitted by plugins on the company's marketing site, all found live and callable on dropletbiosci.com during contract discovery on 2026-08-12.
+
+**Areas:** Company · Health · Healthcare · Diagnostics · Oncology · Genomics · Liquid Biopsy · Life Sciences · Biotechnology · Clinical Laboratory
+
+## Droplet Biosciences on APIs.io
+
+Everything profiled for Droplet Biosciences is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/droplet-biosciences/](https://apis.io/providers/droplet-biosciences/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [Droplet Biosciences WordPress REST API](https://apis.io/apis/droplet-biosciences/droplet-biosciences-wordpress-rest-api/) — The WordPress core REST API served from the company's marketing site. It is live, anonymous for published content, and self-describing: the discovery…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [droplet-biosciences-mcp.yml](https://apis.io/servers/droplet-biosciences/droplet-biosciences-mcp-yml/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Droplet Biosciences Authentication](https://apis.io/security/droplet-biosciences/droplet-biosciences-authentication/)
+- [Droplet Biosciences Domain Security](https://apis.io/security/droplet-biosciences/droplet-biosciences-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Droplet Biosciences Scopes](https://apis.io/scopes/droplet-biosciences/droplet-biosciences-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Droplet Biosciences Plans Pricing](https://apis.io/plans/droplet-biosciences/droplet-biosciences-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Droplet Biosciences Rate Limits](https://apis.io/rate-limits/droplet-biosciences/droplet-biosciences-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://dropletbiosci.com/)
+- [Compliance](https://dropletbiosci.com/certificates-licenses/)
+- [Terms of service](https://dropletbiosci.com/terms-of-service/)
+- [Privacy policy](https://dropletbiosci.com/privacy-policy/)
+
+## API Evangelist rating
+
+**Kin Score 21.0** — emerging · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 69.2 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 11.9 |
+| Access clarity | 28.9 |
+
+**Agent readiness 26.3** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 36.7** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/droplet-biosciences/](https://apis.io/providers/droplet-biosciences/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Droplet Biosciences: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/droplet-biosciences/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
